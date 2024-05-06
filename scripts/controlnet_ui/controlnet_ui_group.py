@@ -265,6 +265,7 @@ class ControlNetUiGroup(object):
         self.output_dir_state = None
         self.advanced_weighting = gr.State(None)
         self.pulid_mode = None
+        self.effective_region_mask = None
 
         # API-only fields
         self.ipadapter_input = gr.State(None)
@@ -346,9 +347,16 @@ class ControlNetUiGroup(object):
                                 value=None,
                                 label="Effective Region Mask",
                                 elem_id=f"{elem_id_tabname}_{tabname}_mask_image",
-                                elem_classes=["cnet-effective-region-mask-image"],
+                                elem_classes=["cnet-mask-image"],
                                 interactive=True,
                             )
+
+                        self.effective_region_mask = gr.Image(
+                            value=None,
+                            visible=False,
+                            elem_classes=["cnet-effective-region-mask"],
+                            interactive=True,
+                        )
 
                 with gr.Tab(label="Batch") as self.batch_tab:
                     self.batch_image_dir = gr.Textbox(
