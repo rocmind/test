@@ -47,10 +47,10 @@ class DepthAnythingDetector:
         )
         remote_url = os.environ.get(
             "CONTROLNET_DEPTH_ANYTHING_MODEL_URL",
-            "https://huggingface.co/spaces/LiheYoung/Depth-Anything/resolve/main/checkpoints/depth_anything_vitl14.pth",
+            "https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth",
         )
         model_path = load_model(
-            "depth_anything_vitl14.pth", remote_url=remote_url, model_dir=self.model_dir
+            "depth_anything_v2_vitl.pth", remote_url=remote_url, model_dir=self.model_dir
         )
         self.model.load_state_dict(torch.load(model_path))
 
@@ -73,7 +73,7 @@ class DepthAnythingDetector:
         if colored:
             return cv2.applyColorMap(depth, cv2.COLORMAP_INFERNO)[:, :, ::-1]
         else:
-            return depth
+            return np.repeat(depth[..., np.newaxis], 3, axis=-1)
 
     def unload_model(self):
         self.model.to("cpu")
